@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+# df = pd.read_csv("homeprices.csv")
+df_area = pd.read_csv("areas.csv")
+
+# print(df_area.head(5))
+
+reg = linear_model.LinearRegression()
+reg.fit(df_area[['area']], df_area.price)
+
+plt.xlabel("Area(sq ft)")
+plt.ylabel("Price(US$)")
+plt.scatter(df_area.area, df_area.price, color="red", marker="*")
+plt.plot(df_area.area, reg.predict(df_area.area), color="blue")
+plt.show()
+
+reg = linear_model.LinearRegression()
+reg.fit(df_area[['area']], df_area.price)
+
+print(reg.predict([[3300]]))
+print(reg.coef_)
+print(reg.intercept_)
+
+p = reg.predict(df_area)
+# print(p)
+
+df_area["prices"] = p
+print(df_area)
+
+# df_area.to_csv("prediction.csv", index=False)
