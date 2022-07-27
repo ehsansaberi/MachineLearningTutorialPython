@@ -1,0 +1,18 @@
+import pandas as pd
+import math
+from sklearn import linear_model
+
+df = pd.read_csv("homeprices.csv")
+print(df)
+bedroom_median = math.floor(df.bedrooms.median())
+
+df.bedrooms = df.bedrooms.fillna(bedroom_median)
+print(df)
+
+reg = linear_model.LinearRegression()
+reg.fit(df[["area", "bedrooms", "age"]], df.price)
+
+print(reg.coef_)
+print(reg.intercept_)
+
+print(reg.predict([[5000, 4, 16]]))
