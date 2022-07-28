@@ -1,0 +1,35 @@
+from pprint import pprint
+from sklearn.linear_model import LinearRegression
+import pandas as pd
+import pickle
+
+df = pd.read_csv("homeprices.csv")
+# pprint(df)
+
+# for mave a nominate column to a digit
+dummies = pd.get_dummies(df.town)
+# pprint(dummies)
+
+# to merge or join dataframes together
+merged = pd.concat([df, dummies], axis="columns")
+# pprint(merged)
+
+# to drop the unwanted column also WE SHOULD DROP ONE THE DUMMY COLUMN
+final = merged.drop(["town", "west windsor"], axis="columns")
+# pprint(final)
+
+x = final.drop(["price"], axis="columns")
+y = final.price
+# pprint(x)
+# pprint(y)
+
+model = LinearRegression()
+model.fit(x, y)
+
+pprint(model.predict([[2800, 0, 1]]))
+
+# to know how precise the model is:
+pprint(model.score(x, y))
+
+with open("model_pickle", "wb") as f:
+    pickle.dump(model, f)
